@@ -1,0 +1,120 @@
+<div class="flex items-center space-x-4">
+    <!-- Search Bar -->
+    <form class="flex-1 max-w-xl" method="GET" action="{% url 'search' %}">
+        <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted"></i>
+            <input type="text" name="q" placeholder="Search courses, resources, or people..."
+                   class="form-input pl-10 pr-4" value="{{ request.GET.q|default:'' }}">
+            <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 text-muted">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </form>
+
+    <!-- Navigation Icons -->
+    <div class="flex items-center space-x-4">
+        <!-- Notifications -->
+        <div class="relative">
+            <button class="nav-link-icon" id="notificationBtn">
+                <i class="fas fa-bell"></i>
+                <span class="badge badge-dot badge-danger" id="notificationBadge">3</span>
+            </button>
+            <div class="notification-dropdown absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-border-light z-50 hidden">
+                <div class="px-4 py-3">
+                    <h6 class="font-semibold text-gray-800 mb-2">Notifications</h6>
+                    <div class="space-y-2">
+                        <!-- Notification items will be populated by JS -->
+                        <div class="notification-item py-2 px-3 bg-gray-50 rounded">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-triangle text-warning text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">System maintenance scheduled</p>
+                                    <p class="text-xs text-gray-500">Today at 2:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-4 border-t border-border-light">
+                        <a href="{% url 'notifications' %}" class="w-full text-center text-sm text-primary-600 hover:text-primary-500">
+                            View All Notifications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="relative">
+            <button class="nav-link-icon" id="messageBtn">
+                <i class="fas fa-envelope"></i>
+                <span class="badge badge-dot badge-primary" id="messageBadge">5</span>
+            </button>
+            <div class="message-dropdown absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-border-light z-50 hidden">
+                <div class="px-4 py-3">
+                    <h6 class="font-semibold text-gray-800 mb-2">Messages</h6>
+                    <div class="space-y-2">
+                        <!-- Message items will be populated by JS -->
+                        <div class="message-item py-2 px-3 bg-gray-50 rounded">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-shrink-0 avatar">
+                                    <span class="text-xs font-medium bg-primary-200 text-primary-800">JS</span>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">John Smith</p>
+                                    <p class="text-xs text-gray-500">Assignment deadline extended</p>
+                                    <p class="text-xs text-gray-400 mt-1">Just now</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-3 px-4 border-t border-border-light">
+                        <a href="{% url 'messages' %}" class="w-full text-center text-sm text-primary-600 hover:text-primary-500">
+                            View All Messages
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Menu -->
+        <div class="relative">
+            <div class="user-info cursor-pointer" id="userMenuBtn">
+                <div class="user-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}">
+                    {% else %}
+                        <span class="text-xs font-medium">{{ user.first_name|default:'U'|slice:":1" }}{{ user.last_name|default:''|slice:":1" }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <span class="text-xs font-medium block">{{ user.first_name|default:'Guest' }}</span>
+                    <span class="text-xs text-muted">{{ user.role|title|default:'User' }}</span>
+                </div>
+                <i class="fas fa-chevron-down text-xs ml-1"></i>
+            </div>
+            <div class="user-dropdown absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-border-light z-50 hidden">
+                <div class="space-y-1">
+                    <a href="{% url 'profile' %}" class="user-dropdown-item">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="{% url 'settings' %}" class="user-dropdown-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="{% url 'help' %}" class="user-dropdown-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Help & Support</span>
+                    </a>
+                    <hr class="my-1 border-border-light">
+                    <a href="{% url 'logout' %}" class="user-dropdown-item text-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
