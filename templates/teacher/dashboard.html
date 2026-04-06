@@ -1,0 +1,187 @@
+{% extends "base/base.html" %}
+
+{% block title %}Teacher Dashboard - EduPlatform{% endblock %}
+
+{% block content %}
+<div class="grid grid-4 gap-6 mb-8">
+    <!-- Stats Cards -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Total Students</h3>
+                    <p class="text-2xl font-bold text-primary-600">{{ total_students }}</p>
+                </div>
+                <div class="flex items-center bg-primary-100 rounded-full p-3">
+                    <i class="fas fa-users text-primary-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">+8% this month</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Active Classes</h3>
+                    <p class="text-2xl font-bold text-success-600">{{ active_classes }}</p>
+                </div>
+                <div class="flex items-center bg-success-100 rounded-full p-3">
+                    <i class="fas fa-chalkboard-teacher text-success-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">2 new this week</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Pending Grades</h3>
+                    <p class="text-2xl font-bold text-warning-600">{{ pending_grades }}</p>
+                </div>
+                <div class="flex items-center bg-warning-100 rounded-full p-3">
+                    <i class="fas fa-pen text-warning-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">Ready for review</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Attendance Rate</h3>
+                    <p class="text-2xl font-bold text-info-600">{{ attendance_rate }}%</p>
+                </div>
+                <div class="flex items-center bg-info-100 rounded-full p-3">
+                    <i class="fas fa-chart-line text-info-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">Above school average</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity & Quick Actions -->
+<div class="grid grid-2 gap-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="font-semibold text-lg">Today's Schedule</h3>
+        </div>
+        <div class="card-body">
+            <div class="space-y-4">
+                {% for class in todays_classes_list %}
+                <div class="flex items-start space-x-3 p-3 bg-primary-50 rounded-lg">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 flex items-center justify-center bg-primary-100 rounded-full">
+                            <i class="fas fa-chalkboard text-primary-600"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-900">{{ class.title }}</p>
+                        <p class="text-xs text-muted">{{ class.time }} • {{ class.room }}</p>
+                        <p class="text-xs text-muted">{{ class.student_count }} students</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-8">
+                    <p class="text-muted">No classes scheduled for today</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="font-semibold text-lg">Quick Actions</h3>
+        </div>
+        <div class="card-body grid grid-2 gap-4">
+            <a href="{% url 'teacher_create_class' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+                <div class="flex items-center bg-primary-100 rounded-full p-4 mb-3">
+                    <i class="fas fa-plus text-primary-600 text-2xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900">Create Class</h4>
+                <p class="text-xs text-muted mt-2">Schedule new class</p>
+            </a>
+
+            <a href="{% url 'teacher_create_assignment' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+                <div class="flex items-center bg-success-100 rounded-full p-4 mb-3">
+                    <i class="fas fa-plus text-success-600 text-2xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900">Create Assignment</h4>
+                <p class="text-xs text-muted mt-2">Add new assignment</p>
+            </a>
+
+            <a href="{% url 'teacher_grade_submissions' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+                <div class="flex items-center bg-warning-100 rounded-full p-4 mb-3">
+                    <i class="fas fa-plus text-warning-600 text-2xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900">Grade Submissions</h4>
+                <p class="text-xs text-muted mt-2">Review student work</p>
+            </a>
+
+            <a href="{% url 'teacher_parent_communication' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+                <div class="flex items-center bg-info-100 rounded-full p-4 mb-3">
+                    <i class="fas fa-plus text-info-600 text-2xl"></i>
+                </div>
+                <h4 class="font-semibold text-gray-900">Parent Communication</h4>
+                <p class="text-xs text-muted mt-2">Send updates</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Class Performance -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="font-semibold text-lg">Class Performance Overview</h3>
+    </div>
+    <div class="card-body">
+        <div class="space-y-4">
+            {% for class_performance in class_performances %}
+            <div class="border-l-4 border-primary-500 pl-4 mb-4 pb-2">
+                <div class="flex items-start space-x-3 mb-2">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-chart-bar text-primary-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-gray-900">{{ class_performance.class_name }}</p>
+                        <p class="text-xs text-muted">{{ class_performance.student_count }} students</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="flex-1 space-x-2">
+                        <p class="text-xs font-medium">Average Grade:</p>
+                        <p class="font-semibold">{{ class_performance.average_grade }}%</p>
+                    </div>
+                    <div class="flex-1 space-x-2">
+                        <p class="text-xs font-medium">Completion Rate:</p>
+                        <p class="font-semibold">{{ class_performance.completion_rate }}%</p>
+                    </div>
+                    <div class="w-20 h-4 bg-primary-100 rounded-full relative">
+                        <div class="bg-primary-500 h-4 rounded-full" style="width: {{ class_performance.completion_rate }}%;"></div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="text-center py-8">
+                <p class="text-muted">No class performance data available</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

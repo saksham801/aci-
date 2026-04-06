@@ -1,0 +1,154 @@
+{% extends "base/base.html" %}
+
+{% block title %}My Profile - Student Portal{% endblock %}
+
+{% block content %}
+<div class="grid grid-2 gap-6">
+    <!-- Profile Sidebar -->
+    <div class="space-y-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="user-avatar w-24 h-24 mx-auto mb-4">
+                    {% if student.profile_picture %}
+                        <img src="{{ student.profile_picture.url }}" alt="{{ student.get_full_name }}">
+                    {% else %}
+                        <span class="text-lg font-medium">{{ student.first_name|default:'S'|slice:":1" }}{{ student.last_name|default:''|slice:":1" }}</span>
+                    {% endif %}
+                </div>
+                <h3 class="font-bold text-lg">{{ student.get_full_name }}</h3>
+                <p class="text-muted">{{ student.email }}</p>
+                <div class="mt-4">
+                    <span class="badge badge-success-100 text-success-800">
+                        {{ student.status|title }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="font-semibold text-lg">Account Information</h3>
+            </div>
+            <div class="card-body space-y-4">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-user text-primary-500 text-lg"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Username</p>
+                        <p class="text-sm text-muted">{{ student.username }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-envelope text-primary-500 text-lg"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Email</p>
+                        <p class="text-sm text-muted">{{ student.email }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-calendar-alt text-primary-500 text-lg"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Join Date</p>
+                        <p class="text-sm text-muted">{{ student.date_joined|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-id-card text-primary-500 text-lg"></i>
+                    <div>
+                        <p class="font-medium text-gray-900">Student ID</p>
+                        <p class="font-medium text-gray-900">{{ student.student_id }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="space-y-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="font-semibold text-lg">Academic Overview</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-3 gap-4">
+                    <div class="card text-center p-4 hover-lift">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-graduation-cap text-primary-500 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900">Courses Enrolled</h4>
+                        <p class="text-2xl font-bold text-primary-600">{{ enrolled_courses_count }}</p>
+                    </div>
+
+                    <div class="card text-center p-4 hover-lift">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-tasks text-success-500 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900">Assignments</h4>
+                        <p class="text-2xl font-bold text-success-600">{{ pending_assignments_count }}</p>
+                        <p class="text-xs text-muted">pending</p>
+                    </div>
+
+                    <div class="card text-center p-4 hover-lift">
+                        <div class="flex items-center justify-center mb-3">
+                            <i class="fas fa-star text-warning-500 text-2xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-900">Average Grade</h4>
+                        <p class="text-2xl font-bold text-warning-600">{{ average_grade }}%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="font-semibold text-lg">Recent Activity</h3>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    {% for activity in recent_activities %}
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0 bg-primary-100 rounded-full p-2">
+                            <i class="fas fa-{{ activity.icon }} text-primary-600"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="font-medium text-gray-900">{{ activity.title }}</p>
+                            <p class="text-xs text-muted">{{ activity.description }}</p>
+                            <p class="text-xs text-muted">{{ activity.time }}</p>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-8">
+                        <p class="text-muted">No recent activity</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="font-semibold text-lg">Upcoming Deadlines</h3>
+            </div>
+            <div class="card-body">
+                <div class="space-y-4">
+                    {% for deadline in upcoming_deadlines %}
+                    <div class="border-l-2 border-primary-200 pl-4 mb-4 pb-2">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <i class="fas fa-clock text-warning-500"></i>
+                            <span class="font-medium">{{ deadline.title }}</span>
+                        </div>
+                        <p class="text-sm text-muted">{{ deadline.description }}</p>
+                        <p class="text-xs font-semibold mt-1">
+                            Due: {{ deadline.due_date|date:"M d, Y" }} at {{ deadline.due_date|time:"H:i" }}
+                        </p>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-8">
+                        <p class="text-muted">No upcoming deadlines</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

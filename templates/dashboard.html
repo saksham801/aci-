@@ -1,0 +1,158 @@
+{% extends "base/base.html" %}
+
+{% block title %}Dashboard - EduPlatform{% endblock %}
+
+{% block content %}
+<div class="grid grid-4 gap-6 mb-8">
+    <!-- Stats Cards -->
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Total Students</h3>
+                    <p class="text-2xl font-bold text-primary-600">{{ total_students }}</p>
+                </div>
+                <div class="flex items-center bg-primary-100 rounded-full p-3">
+                    <i class="fas fa-users text-primary-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">+12% from last month</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Active Courses</h3>
+                    <p class="text-2xl font-bold text-success-600">{{ active_courses }}</p>
+                </div>
+                <div class="flex items-center bg-success-100 rounded-full p-3">
+                    <i class="fas fa-book-open text-success-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">+5 new this week</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">Today's Classes</h3>
+                    <p class="text-2xl font-bold text-warning-600">{{ todays_classes }}</p>
+                </div>
+                <div class="flex items-center bg-warning-100 rounded-full p-3">
+                    <i class="fas fa-chalkboard-teacher text-warning-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">3 in progress</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card hover-lift">
+        <div class="card-body">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h3 class="text-sm font-medium text-muted">System Health</h3>
+                    <p class="text-2xl font-bold text-info-600">99.8%</p>
+                </div>
+                <div class="flex items-center bg-info-100 rounded-full p-3">
+                    <i class="fas fa-heart-pulse text-info-600 text-xl"></i>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="text-xs text-muted">All systems operational</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="grid grid-2 gap-6">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="font-semibold text-lg">Recent Activities</h3>
+        </div>
+        <div class="card-body">
+            <div class="space-y-4">
+                {% for activity in recent_activities %}
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 bg-primary-100 rounded-full p-2">
+                        <i class="fas fa-{{ activity.icon }} text-primary-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-900">{{ activity.title }}</p>
+                        <p class="text-xs text-muted">{{ activity.description }}</p>
+                        <p class="text-xs text-muted">{{ activity.time }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-8">
+                    <p class="text-muted">No recent activities</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="font-semibold text-lg">Upcoming Events</h3>
+        </div>
+        <div class="card-body">
+            <div class="space-y-4">
+                {% for event in upcoming_events %}
+                <div class="border-l-2 border-primary-200 pl-4 mb-4 pb-2">
+                    <p class="font-medium text-gray-900">{{ event.title }}</p>
+                    <p class="text-xs text-muted">{{ event.date }} • {{ event.time }}</p>
+                    <p class="text-sm text-gray-600">{{ event.description }}</p>
+                </div>
+                {% empty %}
+                <div class="text-center py-8">
+                    <p class="text-muted">No upcoming events</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="font-semibold text-lg">Quick Actions</h3>
+    </div>
+    <div class="card-body grid grid-3 gap-4">
+        <a href="{% url 'create_course' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+            <div class="flex items-center bg-primary-100 rounded-full p-4 mb-3">
+                <i class="fas fa-plus text-primary-600 text-2xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-900">Create Course</h4>
+            <p class="text-xs text-muted mt-2">Start a new course</p>
+        </a>
+
+        <a href="{% url 'create_assignment' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+            <div class="flex items-center bg-success-100 rounded-full p-4 mb-3">
+                <i class="fas fa-plus text-success-600 text-2xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-900">Create Assignment</h4>
+            <p class="text-xs text-muted mt-2">Add new assignment</p>
+        </a>
+
+        <a href="{% url 'send_announcement' %}" class="card hover-lift flex flex-col items-center justify-center p-6 text-center">
+            <div class="flex items-center bg-warning-100 rounded-full p-4 mb-3">
+                <i class="fas fa-plus text-warning-600 text-2xl"></i>
+            </div>
+            <h4 class="font-semibold text-gray-900">Send Announcement</h4>
+            <p class="text-xs text-muted mt-2">Notify students</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

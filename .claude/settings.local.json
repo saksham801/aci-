@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(timeout 5 curl -s http://127.0.0.1:8000/)",
+      "Bash(timeout 3 curl:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/)",
+      "Bash(pkill -f \"runserver\")",
+      "Bash(taskkill /f /im python.exe)",
+      "Bash(curl:*)",
+      "Bash(pkill -f \"python\")"
+    ]
+  }
+}

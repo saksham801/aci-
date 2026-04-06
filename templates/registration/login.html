@@ -1,0 +1,70 @@
+{% extends "base/base.html" %}
+
+{% block title %}Login - EduPlatform{% endblock %}
+
+{% block content %}
+<div class="flex min-h-full items-center justify-center bg-secondary-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-bold text-gray-900">
+                Sign in to your account
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Or
+                <a href="#" class="font-medium text-primary-600 hover:text-primary-500">
+                    start your free trial
+                </a>
+            </p>
+        </div>
+        <form class="mt-8 space-y-6" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <input type="hidden" name="remember" value="true">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="username" class="sr-only">Username</label>
+                    <input id="username" name="username" autocomplete="username" required
+                           class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-text-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                           placeholder="Username">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" autocomplete="current-password" required
+                           class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-text-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                           placeholder="Password">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox"
+                           class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                        Remember me
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a href="#" class="font-medium text-primary-600 hover:text-primary-500">
+                        Forgot password?
+                    </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <p class="text-sm text-gray-500">
+                Don't have an account?
+                <a href="#" class="font-medium text-primary-600 hover:text-primary-500">
+                    Sign up
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
